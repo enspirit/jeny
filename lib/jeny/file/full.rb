@@ -3,9 +3,15 @@ module Jeny
     class Full < File
 
       def instantiate(data)
+        context = data
         path.readlines.map{|l|
-          Dialect.render(l, data)
-        }.join("")
+          if l =~ /^#jenyctx\s+([a-z]+)\s*$/
+            context = data[$1]
+            nil
+          else
+            Dialect.render(l, context)
+          end
+        }.compact.join("")
       end
 
     end # class Full

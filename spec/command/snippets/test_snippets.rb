@@ -6,17 +6,14 @@ module Jeny
       Path.dir/"source"
     }
 
-    let(:expected) {
-      Path.dir/"expected"
-    }
-
     subject {
       Command.new.call(argv)
       Path.dir/"source"
     }
 
     after(:each) do
-      system("git checkout #{source}/foo.rb")
+      system("git checkout #{source}/block.rb")
+      (source/"context.rb").rm_rf
     end
 
     context "when data is passed inline" do
@@ -31,7 +28,7 @@ module Jeny
 
       it 'works as expected' do
         subject
-        expect((source/"foo.rb").read).to eq(<<~Y)
+        expect((source/"block.rb").read).to eq(<<~Y)
         module Foo
 
           METHOD_LIST = [
@@ -53,6 +50,9 @@ module Jeny
           #jeny(method) end
         
         end
+        Y
+        expect((source/"context.rb").read).to eq(<<~Y)
+        puts "Hello foo"
         Y
       end
     end
