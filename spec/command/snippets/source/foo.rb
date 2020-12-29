@@ -1,5 +1,10 @@
 module Foo
 
+  METHOD_LIST = [
+    :hello,
+    #jeny(method) :${name},
+  ]
+
   def hello
     "World"
   end

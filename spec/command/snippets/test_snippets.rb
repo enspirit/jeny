@@ -34,6 +34,12 @@ module Jeny
         expect((source/"foo.rb").read).to eq(<<~Y)
         module Foo
 
+          METHOD_LIST = [
+            :hello,
+            :foo,
+            #jeny(method) :${name},
+          ]
+
           def hello
             "World"
           end

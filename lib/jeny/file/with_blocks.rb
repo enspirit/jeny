@@ -35,8 +35,9 @@ module Jeny
         else
           source = str.split("\n").map{|s|
             s.gsub(jeny_block_gsub, "")
-          }.join("\n")
-          [source+"\n", index]
+          }
+          source = source.size == 1 ? source.first : source.join("\n")+"\n"
+          [source, index]
         end
       end
   
