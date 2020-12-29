@@ -1,0 +1,3 @@
+#/usr/bin/env ruby
+require 'jeny'
+Jeny::Command.call(ARGV)

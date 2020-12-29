@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
 
   s.add_dependency "path", "~> 2.0"
+  s.add_dependency "wlang", "~> 2.0"
 
   s.add_development_dependency "rake", "~> 13.0"
   s.add_development_dependency "rspec", "~> 3.7"

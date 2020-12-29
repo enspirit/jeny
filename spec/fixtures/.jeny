@@ -1,0 +1,2 @@
+Jeny::Configuration.new do |c|
+end

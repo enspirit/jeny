@@ -1,0 +1,2 @@
+class NoBlock
+end
