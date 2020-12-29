@@ -13,7 +13,7 @@ module Jeny
 
     after(:each) do
       system("git checkout #{source}/block.rb")
-      (source/"context.rb").rm_rf
+      (source/"foo/foo.rb").rm_rf
     end
 
     context "when data is passed inline" do
@@ -51,7 +51,7 @@ module Jeny
         
         end
         Y
-        expect((source/"context.rb").read).to eq(<<~Y)
+        expect((source/"foo/foo.rb").read).to eq(<<~Y)
         puts "Hello foo"
         Y
       end

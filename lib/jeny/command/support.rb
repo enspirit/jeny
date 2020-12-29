@@ -2,7 +2,7 @@ module Jeny
   class Command
     module Support
 
-      def target_for(source)
+      def target_for(source, data = self.data)
         relative = source.relative_to(from)
         relative.each_filename.map{|f|
           f.gsub(/.jeny$/, "").gsub(/_[a-zA-Z]+_/){|x|
