@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.files       = Dir['LICENSE.md','Gemfile','Rakefile', '{bin,lib,tasks}/**/*','README.md'] & `git ls-files -z`.split("\0")
   s.homepage    = 'http://github.com/enspirit/jeny'
   s.license     = 'MIT'
+  s.executables = ['jeny']
 
   s.add_dependency "path", "~> 2.0"
   s.add_dependency "wlang", "~> 2.0"

@@ -18,13 +18,19 @@ module Jeny
     def call(argv)
       args = option_parser.parse!(argv)
       config = load_config!
-      command, from, to = args
+      command = args.first
       case command
       when "g", "generate"
+        _, from, to = args
         from, to = Path(from), Path(to)
         raise Error, "No such template `#{from}`" unless from.directory?
         to.mkdir_p
         Generate.new(config, jeny_data, from, to).call
+      when "s", "snippets"
+        _, asset, source = args
+        raise Error, "Asset must be specified" if asset.nil? or Path(asset).exist?
+        source ||= Path.pwd
+        Snippets.new(config, jeny_data, asset, Path(source)).call
       else
         raise Error, "Unknown command `#{command}`"
       end
@@ -83,3 +89,4 @@ module Jeny
 end # module Jeny
 require_relative 'command/support'
 require_relative 'command/generate'
+require_relative 'command/snippets'

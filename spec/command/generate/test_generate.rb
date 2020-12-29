@@ -1,6 +1,6 @@
 require 'spec_helper'
 module Jeny
-  describe Command, "scaffold" do
+  describe Command::Generate do
 
     let(:from) {
       (FIXTURES/"rubygem")
