@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.executables = ['jeny']
 
   s.add_dependency "path", "~> 2.0"
-  s.add_dependency "wlang", "~> 2.0"
+  s.add_dependency "wlang", "~> 3.0"
 
   s.add_development_dependency "rake", "~> 13.0"
   s.add_development_dependency "rspec", "~> 3.7"

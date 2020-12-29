@@ -18,7 +18,7 @@ module Jeny
         from.glob("**/*") do |source|
           next if source.directory?
           puts "snippets #{simplify_path(source)}"
-          file = if source.ext == "jeny"
+          file = if source.ext =~ /\.?jeny/
             File::Full.new(source, config)
           else
             File::WithBlocks.new(source, config)
