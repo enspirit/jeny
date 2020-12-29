@@ -17,6 +17,8 @@ module Jeny
         puts
         from.glob("**/*") do |source|
           next if source.directory?
+          next if config.ignore_file?(source)
+
           puts "snippets #{simplify_path(source)}"
           file = if source.ext =~ /\.?jeny/
             file = File::Full.new(source, config)

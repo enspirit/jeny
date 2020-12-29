@@ -19,6 +19,7 @@ module Jeny
           path
         end
       end
+      module_function :simplify_path
 
     end # module Support
   end # class Command
