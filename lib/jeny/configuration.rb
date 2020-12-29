@@ -4,7 +4,7 @@ module Jeny
     def initialize
       yield(self) if block_given?
       @jeny_block_delimiter = "#jeny"
-      @ignore_pattern = /^(vendor|.bundle)/
+      @ignore_pattern = /^(vendor|\.bundle)/
     end
     attr_accessor :jeny_file
     attr_accessor :jeny_block_delimiter
@@ -12,7 +12,7 @@ module Jeny
 
     def ignore_file?(file)
       file = Command::Support.simplify_path(file)
-      file =~ ignore_pattern
+      file.to_s =~ ignore_pattern
     end
 
   end # class Configuration

@@ -19,17 +19,23 @@ module Jeny
           next if source.directory?
           next if config.ignore_file?(source)
 
-          puts "snippets #{simplify_path(source)}"
           file = if source.ext =~ /\.?jeny/
             file = File::Full.new(source, config)
-            ctx = file.instantiate_context(data)
-            instantiated = file.instantiate(ctx)
-            target = target_for(source, ctx)
-            target.parent.mkdir_p
-            target.write(instantiated)
+            if file.has_jeny_context?
+              ctx = file.instantiate_context(data)
+              instantiated = file.instantiate(ctx)
+              target = target_for(source, ctx)
+              target.parent.mkdir_p
+              target.write(instantiated)
+              puts "snippets #{simplify_path(target)}"
+            end
           else
             file = File::WithBlocks.new(source, config)
-            file.rewrite(data, target_for(source))
+            if file.has_jeny_blocks?
+              target = target_for(source)
+              file.rewrite(data, target)
+              puts "snippets #{simplify_path(target)}"
+            end
           end
         end
       end

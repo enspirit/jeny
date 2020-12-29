@@ -4,6 +4,10 @@ module Jeny
 
       CONTEXT_RGX = /^#jenyctx\s+([a-z]+)\s*$/
 
+      def has_jeny_context?
+        path.readlines.first =~ CONTEXT_RGX
+      end
+
       def instantiate_context(data)
         if path.readlines.first =~ CONTEXT_RGX
           data[$1]
