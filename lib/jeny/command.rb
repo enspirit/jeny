@@ -81,6 +81,9 @@ module Jeny
         opts.on("--git", "Use git as state manager") do
           config.state_manager = :git
         end
+        opts.on("--[no-]edit", "Do not open editor") do |s|
+          config.open_editor_on_snippets = s
+        end
         opts.on("--[no-]stash", "Stash before generating snippets") do |s|
           config.state_manager_options[:stash] = s
         end

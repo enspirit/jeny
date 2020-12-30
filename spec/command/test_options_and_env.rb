@@ -51,7 +51,8 @@ module Jeny
         expect(cfg.jeny_block_delimiter).to eq("#jeny")
         expect(cfg.editor_command).to eq("code")
         expect(cfg.state_manager.class).to eq(StateManager)
-        expect(cfg.sm_stash?).to eq(true)
+        expect(cfg.open_editor_on_snippets?).to eq(false)
+        expect(cfg.editor_command).to eq("code")
         expect(cfg.sm_commit?).to eq(true)
       end
     end
@@ -106,10 +107,38 @@ module Jeny
         empty_env
       }
 
-      it 'should have a default config' do
+      it 'should set respective options to false' do
         cfg = subject.config
         expect(cfg.sm_stash?).to eq(false)
         expect(cfg.sm_commit?).to eq(false)
+      end
+    end
+
+    context "when using --no-edit" do
+      let(:argv){
+        [ "--no-edit" ]
+      }
+      let(:env){
+        empty_env
+      }
+
+      it 'should set open_editor_on_snippets to false' do
+        cfg = subject.config
+        expect(cfg.open_editor_on_snippets?).to eq(false)
+      end
+    end
+
+    context "when using --edit" do
+      let(:argv){
+        [ "--edit" ]
+      }
+      let(:env){
+        empty_env
+      }
+
+      it 'should set open_editor_on_snippets to true' do
+        cfg = subject.config
+        expect(cfg.open_editor_on_snippets?).to eq(true)
       end
     end
 

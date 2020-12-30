@@ -94,6 +94,8 @@ module Jeny
     # Defaults to `false`
     attr_accessor :open_editor_on_snippets
 
+    alias :open_editor_on_snippets? :open_editor_on_snippets
+
     # Should `file` be ignored?
     def ignore_file?(file)
       file = Command::Support.simplify_path(file)

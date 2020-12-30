@@ -38,12 +38,13 @@ The second use case is the generation of code snippets inside
 existing annotated source code.
 
 ```sh
-jeny -d ... -d ... snippet snipname path/to/code
+jeny [--edit] -d ... -d ... snippet snipname path/to/code
 ```
 
 Code snippets are commented code blocks prefixed by a jeny delimiter.
 When executing `jeny s`, all files under `path/to/files` are inspected
-and jeny code blocks instantiated as uncommented code.
+and jeny code blocks instantiated as uncommented code. The `--edit`
+option opens changed files in your favorite editor.
 
 For instance, when executing
 
