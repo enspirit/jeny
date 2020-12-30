@@ -8,6 +8,8 @@ module Jeny
 
     let(:empty_env){{
       'JENY_EDITOR' => nil,
+      'EDITOR' => nil,
+      'GIT_EDITOR' => nil,
       'JENY_STATE_MANAGER' => nil
     }}
 
