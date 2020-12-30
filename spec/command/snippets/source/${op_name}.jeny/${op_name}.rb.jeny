@@ -1,2 +1,2 @@
-#jenyctx method
+#jeny(method)
 puts "Hello ${opname}"

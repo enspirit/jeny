@@ -3,7 +3,7 @@ module Jeny
     class Full < File
 
       def context_rgx
-        /^#{config.jeny_block_delimiter}ctx\s+([a-z]+)\s*$/
+        /^#{config.jeny_block_delimiter}\(([a-z]+)\)\s*$/
       end
 
       def has_jeny_context?
