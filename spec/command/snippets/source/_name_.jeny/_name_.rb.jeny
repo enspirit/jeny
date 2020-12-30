@@ -1,2 +1,0 @@
-#jenyctx method
-puts "Hello ${name}"

@@ -5,7 +5,7 @@ module Jeny
       def target_for(source, data = self.data)
         relative = source.relative_to(from)
         relative.each_filename.map{|f|
-          f.gsub(/.jeny$/, "").gsub(/_[a-zA-Z]+_/){|x|
+          f.gsub(/.jeny$/, "").gsub(/_[a-zA-Z_]+_/){|x|
             key = x[1...-1]
             data.has_key?(key) ? data[key] : x
           }

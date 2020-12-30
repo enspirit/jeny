@@ -19,7 +19,7 @@ module Jeny
     context "when data is passed inline" do
       let(:argv) {
         [
-          "-d", "name:foo",
+          "-d", "op_name:foo",
           "snippets",
           "method",
           source.to_s,
@@ -34,7 +34,7 @@ module Jeny
           METHOD_LIST = [
             :hello,
             :foo,
-            #jeny(method) :${name},
+            #jeny(method) :${op_name},
           ]
 
           def hello
@@ -45,7 +45,7 @@ module Jeny
             # TODO: implement me
           end
 
-          #jeny(method) def ${name}
+          #jeny(method) def ${op_name}
           #jeny(method)   # TODO: implement me
           #jeny(method) end
         
