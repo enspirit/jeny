@@ -121,6 +121,7 @@ jeny --git -d ... s snipname
 Doing so will:
 - stash any current change
 - generate code snippets
+- commit the result
 - unstash stashed changes
 
 If anything fails, all changes are reverted before unstashing.
