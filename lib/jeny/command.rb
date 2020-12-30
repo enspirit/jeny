@@ -78,6 +78,9 @@ module Jeny
           require 'json' if file.ext == 'json'
           @jeny_data = file.load
         end
+        opts.on("--git", "Use git as state manager") do
+          config.state_manager = :git
+        end
         opts.on("-v", "--version", "Prints version") do
           puts "Jeny v#{VERSION}"
           exit

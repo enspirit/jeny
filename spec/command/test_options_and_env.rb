@@ -74,9 +74,22 @@ module Jeny
           }
         }
 
-        it 'takes the priority' do
-          cfg = subject.config
-          expect(cfg.state_manager.class).to eq(StateManager)
+        context 'when no argv are passed' do
+          it 'the .jeny config takes the priority' do
+            cfg = subject.config
+            expect(cfg.state_manager.class).to eq(StateManager)
+          end
+        end
+
+        context "when using --git" do
+          let(:argv){
+            [ "--git" ]
+          }
+
+          it '--git takes the priority' do
+            cfg = subject.config
+            expect(cfg.state_manager.class).to eq(StateManager::Git)
+          end
         end
       end
     end
