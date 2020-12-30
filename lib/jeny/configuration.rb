@@ -6,6 +6,7 @@ module Jeny
       @ignore_pattern = /^(vendor|\.bundle)/
       @editor_command = default_editor_command
       @open_editor_on_snippets = false
+      @state_manager = default_state_manager
       yield(self) if block_given?
     end
     attr_accessor :jeny_file
@@ -28,6 +29,35 @@ module Jeny
 
     def default_editor_command
       ENV['JENY_EDITOR'] || ENV['GIT_EDITOR'] || ENV['EDITOR'] || "code"
+    end
+
+    # State manager to use.
+    #
+    # Default value check the JENY_STATE_MANAGER environment variable:
+    # - `none`, no state management is done
+    # - `git`, git is used to stash/unstash/commit/reset
+    #
+    # Defaults to `none`, that is, to an empty state manager.
+    attr_reader :state_manager
+
+    # Sets the state manager to use. `sm` can be a state manager instance,
+    # of a string of symbol with same value as JENY_STATE_MANAGER env
+    # variable.
+    def state_manager=(sm)
+      case sm
+      when StateManager then sm
+      when :git, "git"  then StateManager::Git.new(self)
+      else StateManager.new(self)
+      end
+    end
+
+    def default_state_manager
+      case ENV['JENY_STATE_MANAGER']
+      when "git"
+        StateManager::Git.new(self)
+      else
+        StateManager.new(self)
+      end
     end
 
     # Whether files generated/modified by Snippets must be edited right after.

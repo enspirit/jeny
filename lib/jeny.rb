@@ -4,6 +4,7 @@ module Jeny
   class Error < StandardError; end
 end
 require_relative 'jeny/version'
+require_relative 'jeny/state_manager'
 require_relative 'jeny/configuration'
 require_relative 'jeny/caser'
 require_relative 'jeny/dialect'

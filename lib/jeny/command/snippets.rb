@@ -15,16 +15,24 @@ module Jeny
 
       def call
         puts
-        changed = from.glob("**/*").map{|source|
+        config.state_manager.stash
+        changed = []
+        from.glob("**/*").each do |source|
           next if source.directory?
           next if config.ignore_file?(source)
-          snippet_it(source)
-        }.compact
-
+          pair = snippet_it(source)
+          changed << pair if pair
+        end
+        config.state_manager.commit(changed.map(&:first))
         to_open = changed
           .select{|pair| config.should_be_edited?(*pair) }
           .map{|pair| simplify_path(pair.first) }
         config.open_editor(to_open) unless to_open.empty?
+      rescue
+        config.state_manager.reset(changed.map(&:first))
+        raise
+      ensure
+        config.state_manager.unstash
       end
 
       def snippet_it(source)
