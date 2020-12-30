@@ -1,11 +1,15 @@
 module Jeny
   class Configuration
 
+    DEFAULT_EDIT_PROC = ->(_,content) {
+      content =~ /TODO/
+    }
+
     def initialize
       @jeny_block_delimiter = "#jeny"
       @ignore_pattern = /^(vendor|\.bundle)/
       @editor_command = default_editor_command
-      @open_editor_on_snippets = false
+      @edit_changed_files = DEFAULT_EDIT_PROC
       @state_manager = default_state_manager
       @state_manager_options = {
         stash: true,
@@ -32,7 +36,7 @@ module Jeny
     attr_accessor :editor_command
 
     def default_editor_command
-      ENV['JENY_EDITOR'] || ENV['GIT_EDITOR'] || ENV['EDITOR'] || "code"
+      ENV['JENY_EDITOR'] || ENV['GIT_EDITOR'] || ENV['EDITOR']
     end
 
     # State manager to use.
@@ -82,7 +86,7 @@ module Jeny
       end
     end
 
-    # Whether files generated/modified by Snippets must be edited right after.
+    # Whether files generated/modified must be edited right after.
     #
     # Accepted values are:
     # - `false`, then source code edition is disabled
@@ -91,10 +95,10 @@ module Jeny
     # - `->(f,c){}`, the file `f` whose generated content is `c` is open
     #   is the proc returns a truthy value.
     #
-    # Defaults to `false`
-    attr_accessor :open_editor_on_snippets
+    # Defaults to a Proc that opens files having at least one TODO.
+    attr_accessor :edit_changed_files
 
-    alias :open_editor_on_snippets? :open_editor_on_snippets
+    alias :edit_changed_files? :edit_changed_files
 
     # Should `file` be ignored?
     def ignore_file?(file)
@@ -104,17 +108,16 @@ module Jeny
 
     # Whether file should be edited after being snippetted
     def should_be_edited?(file, content)
-      case open_editor_on_snippets
-      when false, nil
-        false
-      when true
-        !editor_command.nil?
+      return false if editor_command.nil?
+      case edit_changed_files
+      when false, true, nil
+        !!edit_changed_files
       when Regexp
-        !!(file.to_s =~ open_editor_on_snippets)
+        !!(file.to_s =~ edit_changed_files)
       when Proc
-        !!open_editor_on_snippets.call(file, content)
+        !!edit_changed_files.call(file, content)
       else
-        raise Error, "Wrong open_editor_on_snippets `#{open_editor_on_snippets}`"
+        raise Error, "Wrong edit_changed_files `#{edit_changed_files}`"
       end
     end
 

@@ -6,6 +6,14 @@ module Jeny
       config.should_be_edited?(file, content)
     }
 
+    def a_config(editor = "code")
+      Configuration.new{|c|
+        c.editor_command = editor
+        yield(c) if block_given?
+      }
+    end
+
+
     let(:file){
       Path.file
     }
@@ -15,26 +23,25 @@ module Jeny
     }
 
     context "when using a default config" do
-      let(:config){ Configuration.new }
+      let(:config){ a_config(nil) }
 
       it{ expect(subject).to be_falsy }
     end
 
-    context "when setting open_editor_on_snippets to true" do
+    context "when setting edit_changed_files to true" do
       let(:config){
-        Configuration.new{|c|
-          c.open_editor_on_snippets = true
+        a_config("code"){|c|
+          c.edit_changed_files = true
         }
       }
 
       it{ expect(subject).to be_truthy }
     end
 
-    context "when setting open_editor_on_snippets to true, but no editor" do
+    context "when setting edit_changed_files to true, but no editor" do
       let(:config){
-        Configuration.new{|c|
-          c.editor_command = nil
-          c.open_editor_on_snippets = true
+        a_config(nil){|c|
+          c.edit_changed_files = true
         }
       }
 
@@ -42,10 +49,10 @@ module Jeny
     end
 
 
-    context "when setting open_editor_on_snippets to a regexp" do
+    context "when setting edit_changed_files to a regexp" do
       let(:config){
-        Configuration.new{|c|
-          c.open_editor_on_snippets = /configuration.rb/
+        a_config("code"){|c|
+          c.edit_changed_files = /configuration.rb/
         }
       }
 
@@ -62,10 +69,10 @@ module Jeny
       end
     end
 
-    context "when setting open_editor_on_snippets to a Proc" do
+    context "when setting edit_changed_files to a Proc" do
       let(:config){
-        Configuration.new{|c|
-          c.open_editor_on_snippets = ->(f,c){
+        a_config("code"){|c|
+          c.edit_changed_files = ->(f,c){
             c == "hello"
           }
         }

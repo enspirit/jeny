@@ -28,10 +28,7 @@ module Jeny
 
         sm.commit(changed.map(&:first), state) if config.sm_commit?
 
-        to_open = changed
-          .select{|pair| config.should_be_edited?(*pair) }
-          .map{|pair| simplify_path(pair.first) }
-        config.open_editor(to_open) unless to_open.empty?
+        edit_changed_files(changed)
       rescue
         sm.reset(changed.map(&:first), state)
         raise

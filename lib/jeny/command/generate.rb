@@ -13,6 +13,7 @@ module Jeny
 
       def call
         puts
+        changed = []
         from.glob("**/*") do |source|
           target = target_for(source)
           puts "creating #{simplify_path(target)}"
@@ -21,9 +22,12 @@ module Jeny
           else
             target.parent.mkdir_p
             file = File::Full.new(source, config)
-            file.rewrite(data, target)
+            target_content = file.instantiate(data)
+            target.write(target_content)
+            changed << [target, target_content]
           end
         end
+        edit_changed_files(changed)
       end
 
     end # class Generate

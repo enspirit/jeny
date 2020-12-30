@@ -81,8 +81,11 @@ module Jeny
         opts.on("--git", "Use git as state manager") do
           config.state_manager = :git
         end
-        opts.on("--[no-]edit", "Do not open editor") do |s|
-          config.open_editor_on_snippets = s
+        opts.on("--edit-if=MATCH", "Edit files matching a given term") do |s|
+          config.edit_changed_files = ->(f,c){ c =~ Regexp.new(s) }
+        end
+        opts.on("--[no-]edit", "Edit files having a TODO") do |s|
+          config.edit_changed_files = s ? Configuration::DEFAULT_EDIT_PROC : false
         end
         opts.on("--[no-]stash", "Stash before generating snippets") do |s|
           config.state_manager_options[:stash] = s

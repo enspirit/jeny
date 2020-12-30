@@ -49,10 +49,9 @@ module Jeny
       it 'should have a default config' do
         cfg = subject.config
         expect(cfg.jeny_block_delimiter).to eq("#jeny")
-        expect(cfg.editor_command).to eq("code")
+        expect(cfg.editor_command).to be_nil
         expect(cfg.state_manager.class).to eq(StateManager)
-        expect(cfg.open_editor_on_snippets?).to eq(false)
-        expect(cfg.editor_command).to eq("code")
+        expect(cfg.edit_changed_files?).to be_truthy
         expect(cfg.sm_commit?).to eq(true)
       end
     end
@@ -122,9 +121,9 @@ module Jeny
         empty_env
       }
 
-      it 'should set open_editor_on_snippets to false' do
+      it 'should set edit_changed_files to false' do
         cfg = subject.config
-        expect(cfg.open_editor_on_snippets?).to eq(false)
+        expect(cfg.edit_changed_files?).to eq(false)
       end
     end
 
@@ -136,9 +135,26 @@ module Jeny
         empty_env
       }
 
-      it 'should set open_editor_on_snippets to true' do
+      it 'should set edit_changed_files to true' do
         cfg = subject.config
-        expect(cfg.open_editor_on_snippets?).to eq(true)
+        expect(cfg.edit_changed_files?).to eq(Configuration::DEFAULT_EDIT_PROC)
+      end
+    end
+
+    context "when using --edit-if" do
+      let(:argv){
+        [ "--edit-if=TRIC" ]
+      }
+      let(:env){
+        empty_env
+      }
+
+      it 'should set edit_changed_files to true' do
+        cfg = subject.config
+        expect(cfg.edit_changed_files?).to be_a(Proc)
+        expect(cfg.edit_changed_files?).not_to eq(Configuration::DEFAULT_EDIT_PROC)
+        expect(cfg.edit_changed_files.call(Path.file, "Hello\n\nworld and TRIC\n")).to be_truthy
+        expect(cfg.edit_changed_files.call(Path.file, "Hello\n\nworld and TROC\n")).to be_falsy
       end
     end
 

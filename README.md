@@ -22,11 +22,12 @@ The first use case is the generation of a project structure from
 an existing scaffold.
 
 ```sh
-jeny -d ... -d ... generate path/to/scaffold path/to/target
+jeny --[no-]edit -d ... -d ... generate path/to/scaffold path/to/target
 ```
 
 This command will recursively copy and instantiate files and
 directories from the scaffold folder to the destination folder.
+Your favorite editor opens on files having at least one TODO.
 
 File content is generated using a very simple and not that
 powerful templating language, see sections later. Code snippets
@@ -38,13 +39,13 @@ The second use case is the generation of code snippets inside
 existing annotated source code.
 
 ```sh
-jeny [--edit] -d ... -d ... snippet snipname path/to/code
+jeny --[no-]edit -d ... -d ... snippet snipname path/to/code
 ```
 
 Code snippets are commented code blocks prefixed by a jeny delimiter.
 When executing `jeny s`, all files under `path/to/files` are inspected
-and jeny code blocks instantiated as uncommented code. The `--edit`
-option opens changed files in your favorite editor.
+and jeny code blocks instantiated as uncommented code. Your favorite
+editor opens on files having at least one TODO.
 
 For instance, when executing
 
