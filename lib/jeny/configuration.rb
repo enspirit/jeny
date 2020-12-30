@@ -7,6 +7,10 @@ module Jeny
       @editor_command = default_editor_command
       @open_editor_on_snippets = false
       @state_manager = default_state_manager
+      @state_manager_options = {
+        stash: true,
+        commit: true
+      }
       yield(self) if block_given?
     end
     attr_accessor :jeny_file
@@ -39,6 +43,24 @@ module Jeny
     #
     # Defaults to `none`, that is, to an empty state manager.
     attr_reader :state_manager
+
+    # Options for the state manager.
+    #
+    # This is a Hash, with `:stash` and `:commit` keys mapping to
+    # either true of false.
+    #
+    # Both are true by default.
+    attr_reader :state_manager_options
+
+    # :nodoc:
+    def sm_stash?
+      state_manager_options[:stash]
+    end
+
+    # :nodoc:
+    def sm_commit?
+      state_manager_options[:commit]
+    end
 
     # Sets the state manager to use. `sm` can be a state manager instance,
     # of a string of symbol with same value as JENY_STATE_MANAGER env

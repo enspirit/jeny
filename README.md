@@ -126,6 +126,8 @@ Doing so will:
 
 If anything fails, all changes are reverted before unstashing.
 
+Please also check the `--no-stash` and `--no-commit` commandline options.
+
 **IMPORTANT** You must execute `jeny` with a git project as current folder.
 
 **IMPORTANT** Please use this option with case, as it is still experimental.

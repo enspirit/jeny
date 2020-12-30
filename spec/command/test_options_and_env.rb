@@ -51,6 +51,8 @@ module Jeny
         expect(cfg.jeny_block_delimiter).to eq("#jeny")
         expect(cfg.editor_command).to eq("code")
         expect(cfg.state_manager.class).to eq(StateManager)
+        expect(cfg.sm_stash?).to eq(true)
+        expect(cfg.sm_commit?).to eq(true)
       end
     end
 
@@ -93,6 +95,21 @@ module Jeny
             expect(cfg.state_manager.class).to eq(StateManager::Git)
           end
         end
+      end
+    end
+
+    context "when using --no-commit and --no-stash" do
+      let(:argv){
+        [ "--no-commit", "--no-stash" ]
+      }
+      let(:env){
+        empty_env
+      }
+
+      it 'should have a default config' do
+        cfg = subject.config
+        expect(cfg.sm_stash?).to eq(false)
+        expect(cfg.sm_commit?).to eq(false)
       end
     end
 

@@ -15,8 +15,9 @@ module Jeny
 
       def call
         puts
-        state = OpenStruct.new
-        config.state_manager.stash(state)
+        sm, state = config.state_manager, OpenStruct.new
+        sm.stash(state) if config.sm_stash?
+
         changed = []
         from.glob("**/*").each do |source|
           next if source.directory?
@@ -24,16 +25,18 @@ module Jeny
           pair = snippet_it(source)
           changed << pair if pair
         end
-        config.state_manager.commit(changed.map(&:first), state)
+
+        sm.commit(changed.map(&:first), state) if config.sm_commit?
+
         to_open = changed
           .select{|pair| config.should_be_edited?(*pair) }
           .map{|pair| simplify_path(pair.first) }
         config.open_editor(to_open) unless to_open.empty?
       rescue
-        config.state_manager.reset(changed.map(&:first), state)
+        sm.reset(changed.map(&:first), state)
         raise
       ensure
-        config.state_manager.unstash(state)
+        sm.unstash(state) if config.sm_stash?
       end
 
       def snippet_it(source)

@@ -81,6 +81,12 @@ module Jeny
         opts.on("--git", "Use git as state manager") do
           config.state_manager = :git
         end
+        opts.on("--[no-]stash", "Stash before generating snippets") do |s|
+          config.state_manager_options[:stash] = s
+        end
+        opts.on("--[no-]commit", "Commit generated snippets") do |c|
+          config.state_manager_options[:commit] = c
+        end
         opts.on("-v", "--version", "Prints version") do
           puts "Jeny v#{VERSION}"
           exit

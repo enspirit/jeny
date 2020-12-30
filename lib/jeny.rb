@@ -1,5 +1,6 @@
 require 'path'
 require 'wlang'
+require 'ostruct'
 module Jeny
   class Error < StandardError; end
 end
