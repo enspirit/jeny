@@ -3,8 +3,8 @@ module Jeny
   class Command
 
     def initialize
+      @config = nil
       @jeny_data = {}
-      @jeny_file = nil
     end
     attr_reader :jeny_data
 
@@ -16,21 +16,20 @@ module Jeny
     end
 
     def call(argv)
+      @config = load_config!
       args = option_parser.parse!(argv)
-      config = load_config!
-      command = args.first
-      case command
+      case command = args.first
       when "g", "generate"
         _, from, to = args
         from, to = Path(from), Path(to)
         raise Error, "No such template `#{from}`" unless from.directory?
         to.mkdir_p
-        Generate.new(config, jeny_data, from, to).call
+        Generate.new(@config, jeny_data, from, to).call
       when "s", "snippets"
         _, asset, source = args
         raise Error, "Asset must be specified" if asset.nil? or Path(asset).exist?
         source ||= Path.pwd
-        Snippets.new(config, jeny_data, asset, Path(source)).call
+        Snippets.new(@config, jeny_data, asset, Path(source)).call
       else
         raise Error, "Unknown command `#{command}`"
       end
@@ -39,19 +38,19 @@ module Jeny
   private
 
     def load_config!
-      @jeny_file = Path.pwd/".jeny"
-      @jeny_file = Path.backfind(".jeny") unless @jeny_file.file?
-      unless @jeny_file
+      jeny_file = Path.pwd/".jeny"
+      jeny_file = Path.backfind(".jeny") unless jeny_file.file?
+      unless jeny_file
         puts "Using default Jeny configuration"
         return Configuration.new
       end
-      unless (cf = Path(@jeny_file)).file?
-        raise Error, "No such file `#{@jeny_file}`"
+      unless (cf = Path(jeny_file)).file?
+        raise Error, "No such file `#{jeny_file}`"
       end
       unless (config = Kernel.eval(cf.read)).is_a?(Configuration)
         raise Error, "Config file corrupted, no Configuration returned"
       end
-      puts "Using #{@jeny_file}"
+      puts "Using #{jeny_file}"
       config.tap{|c|
         c.jeny_file = cf
       }
@@ -63,9 +62,6 @@ module Jeny
           Usage: jeny [options] g[enerate] SOURCE TARGET
                  jeny [options] s[nippets] ASSET [TARGET]
         B
-        opts.on('-c path/to/config.rb') do |path|
-          @jeny_file = Path(path)
-        end
         opts.on("-d key:value", "Add generation data") do |pair|
           k, v = pair.split(':')
           @jeny_data[k] = v
