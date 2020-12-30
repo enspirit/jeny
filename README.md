@@ -177,6 +177,16 @@ For a full list of options, check the help:
 jeny --help
 ```
 
+## Public API
+
+This library uses SemVer 2.0. Its public API is:
+
+* The command line tool and its options
+* The Configuration class powering the .jeny file
+* All recognized environment variables and their effect on configuration
+* The syntax and semantics of #jeny blocks and file header
+* The syntax and semantics of the templating language
+
 ## Contributing
 
 Use github issues and pull requests for contributions. Please favor pull
