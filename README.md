@@ -81,7 +81,7 @@ following first line:
 
 ## Templating language
 
-The current template language uses (WLang)[https://github.com/blambeau/wlang]
+The current template language uses [WLang](https://github.com/blambeau/wlang)
 with a very simple dialect. Jeny only supports simple variable for now. It
 does not support iterations and conditionals, on intent (?).
 
@@ -176,7 +176,7 @@ jeny --help
 
 ## Contributing
 
-use github issues and pull requests for contributions. Please favor pull
+Use github issues and pull requests for contributions. Please favor pull
 requests if possible for small changes. Make sure to keep in touch with us
 before making big changes though, as they might not be aligned with our
 roadmap, or conflict with open pull requests.
