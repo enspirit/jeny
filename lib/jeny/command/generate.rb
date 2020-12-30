@@ -20,11 +20,7 @@ module Jeny
             target.mkdir_p
           else
             target.parent.mkdir_p
-            file = if source.ext =~ /\.?jeny/
-              File::Full.new(source, config)
-            else
-              File::WithBlocks.new(source, config)
-            end
+            file = File::Full.new(source, config)
             file.rewrite(data, target)
           end
         end
