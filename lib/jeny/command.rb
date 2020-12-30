@@ -39,8 +39,10 @@ module Jeny
   private
 
     def load_config!
-      @jeny_file ||= Path.backfind(".jeny")
+      @jeny_file = Path.pwd/".jeny"
+      @jeny_file = Path.backfind(".jeny") unless @jeny_file.file?
       unless @jeny_file
+        puts "Using default Jeny configuration"
         return Configuration.new
       end
       unless (cf = Path(@jeny_file)).file?
@@ -49,6 +51,7 @@ module Jeny
       unless (config = Kernel.eval(cf.read)).is_a?(Configuration)
         raise Error, "Config file corrupted, no Configuration returned"
       end
+      puts "Using #{@jeny_file}"
       config.tap{|c|
         c.jeny_file = cf
       }
