@@ -7,6 +7,7 @@ module Jeny
       @jeny_data = {}
     end
     attr_reader :jeny_data
+    attr_reader :config
 
     def self.call(argv)
       new.call(argv)
@@ -16,8 +17,7 @@ module Jeny
     end
 
     def call(argv)
-      @config = load_config!
-      args = option_parser.parse!(argv)
+      args = parse_argv!(argv, load_config!)
       case command = args.first
       when "g", "generate"
         _, from, to = args
@@ -33,6 +33,11 @@ module Jeny
       else
         raise Error, "Unknown command `#{command}`"
       end
+    end
+
+    def parse_argv!(argv, config = Configuration.new)
+      @config = config
+      option_parser(config).parse!(argv)
     end
 
   private
@@ -56,7 +61,7 @@ module Jeny
       }
     end
 
-    def option_parser
+    def option_parser(config)
       option_parser ||= OptionParser.new do |opts|
         opts.banner = <<~B
           Usage: jeny [options] g[enerate] SOURCE TARGET

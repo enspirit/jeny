@@ -44,7 +44,7 @@ module Jeny
     # of a string of symbol with same value as JENY_STATE_MANAGER env
     # variable.
     def state_manager=(sm)
-      case sm
+      @state_manager = case sm
       when StateManager then sm
       when :git, "git"  then StateManager::Git.new(self)
       else StateManager.new(self)
