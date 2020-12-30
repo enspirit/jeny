@@ -17,8 +17,10 @@ module Jeny
 
       # Reset all changes through a `git reset --hard`.
       #
-      # WARN: changed is ignored, since stash has been called before.
+      # WARN: changes not related to `changed` are reverted too,
+      # which should be nothing since a stash has been done before.
       def reset(changed)
+        changed.each{|f| f.rm_rf if f.exists? }
         system("git reset --hard")
       end
 
