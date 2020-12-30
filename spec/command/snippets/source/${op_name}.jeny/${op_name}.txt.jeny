@@ -1,0 +1,2 @@
+#jeny(notamethod)
+puts "Hello ${opname}"

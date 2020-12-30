@@ -42,11 +42,13 @@ module Jeny
           file = File::Full.new(source, config)
           if file.has_jeny_context?
             ctx = file.instantiate_context(data)
-            target_content = file.instantiate(ctx)
-            target = target_for(source, ctx)
-            target.parent.mkdir_p
-            target.write(target_content)
-            puts "snippets #{simplify_path(target)}"
+            if ctx
+              target_content = file.instantiate(ctx)
+              target = target_for(source, ctx)
+              target.parent.mkdir_p
+              target.write(target_content)
+              puts "snippets #{simplify_path(target)}"
+            end
           end
         else
           file = File::WithBlocks.new(source, config)

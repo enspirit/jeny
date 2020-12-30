@@ -54,6 +54,7 @@ module Jeny
         expect((source/"foo/foo.rb").read).to eq(<<~Y)
         puts "Hello foo"
         Y
+        expect((source/"foo/foo.txt").exist?).to eq(false)
       end
     end
 
