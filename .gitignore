@@ -3,3 +3,4 @@ Gemfile.lock
 pkg
 /spec/command/**/got
 .DS_Store
+vendor/bundle
