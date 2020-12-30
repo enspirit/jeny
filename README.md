@@ -60,7 +60,7 @@ generating a `method` snippet if it contains the following header:
 ```
 
 The full file path is also instantiated through variables before the
-file is created. Naming the file `test__name_.rb.jeny` will generate
+file is created. Naming the file `test_${name}.rb.jeny` will generate
 `test_hello.rb`.
 
 ## Configuration and available options

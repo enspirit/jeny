@@ -17,7 +17,7 @@ module Jeny
         file.instantiate({ "name" => "hello", "Name" => "Hello" })
       }
       let(:path){
-        FIXTURES/"rubygem/lib/_name_.rb.jeny"
+        FIXTURES/"rubygem/lib/${name}.rb.jeny"
       }
 
       it 'works as expected' do
