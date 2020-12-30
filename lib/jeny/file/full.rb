@@ -2,14 +2,16 @@ module Jeny
   class File
     class Full < File
 
-      CONTEXT_RGX = /^#jenyctx\s+([a-z]+)\s*$/
+      def context_rgx
+        /^#{config.jeny_block_delimiter}ctx\s+([a-z]+)\s*$/
+      end
 
       def has_jeny_context?
-        path.readlines.first =~ CONTEXT_RGX
+        path.readlines.first =~ context_rgx
       end
 
       def instantiate_context(data)
-        if path.readlines.first =~ CONTEXT_RGX
+        if path.readlines.first =~ context_rgx
           data[$1]
         else
           data
@@ -18,7 +20,7 @@ module Jeny
 
       def instantiate(data)
         path.readlines.map{|l|
-          next if l =~ CONTEXT_RGX
+          next if l =~ context_rgx
           Dialect.render(l, data)
         }.compact.join("")
       end
