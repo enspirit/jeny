@@ -6,8 +6,8 @@ module Jeny
     }
 
     def initialize
-      @jeny_block_delimiter = "#jeny"
-      @ignore_pattern = /^(vendor|\.bundle)/
+      @jeny_block_delimiter = "(#|\/\/)jeny"
+      @ignore_pattern = /^(vendor|\.bundle|.min.js|.min.css)/
       @editor_command = default_editor_command
       @edit_changed_files = DEFAULT_EDIT_PROC
       @state_manager = default_state_manager

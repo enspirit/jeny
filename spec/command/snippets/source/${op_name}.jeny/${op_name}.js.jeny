@@ -1,0 +1,2 @@
+//jeny(method)
+console.log("Hello ${opName}")

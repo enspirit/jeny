@@ -3,7 +3,7 @@ module Jeny
     class Full < File
 
       def context_rgx
-        /^#{config.jeny_block_delimiter}\(([a-z]+)\)\s*$/
+        /^#{config.jeny_block_delimiter}\((?<asset>[a-z]+)\)\s*$/
       end
 
       def has_jeny_context?
@@ -11,8 +11,8 @@ module Jeny
       end
 
       def instantiate_context(data)
-        if path.readlines.first =~ context_rgx
-          data[$1]
+        if match = path.readlines.first.match(context_rgx)
+          data[match[:asset]]
         else
           data
         end

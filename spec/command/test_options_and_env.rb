@@ -48,7 +48,7 @@ module Jeny
 
       it 'should have a default config' do
         cfg = subject.config
-        expect(cfg.jeny_block_delimiter).to eq("#jeny")
+        expect(cfg.jeny_block_delimiter).to eq("(#|//)jeny")
         expect(cfg.editor_command).to be_nil
         expect(cfg.state_manager.class).to eq(StateManager)
         expect(cfg.edit_changed_files?).to be_truthy
@@ -160,4 +160,3 @@ module Jeny
 
   end
 end
-
