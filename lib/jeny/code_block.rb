@@ -17,7 +17,7 @@ module Jeny
       case d = data[asset]
       when NilClass
       when Hash
-        Dialect.render(source, d)
+        Dialect.render(source, d) rescue source
       when Array
         d.map{|item| instantiate(asset => item) }.join("\n")  
       else

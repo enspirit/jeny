@@ -21,7 +21,7 @@ module Jeny
       def instantiate(data)
         path.readlines.map{|l|
           next if l =~ context_rgx
-          Dialect.render(l, data)
+          Dialect.render(l, data) rescue l
         }.compact.join("")
       end
 

@@ -4,6 +4,9 @@ module Jeny
 
       def has_jeny_blocks?
         !jeny_blocks.empty?
+      rescue Exception => ex
+        puts "WARN: #{path} skipped: #{ex.message}"
+        false
       end
 
       def jeny_blocks
