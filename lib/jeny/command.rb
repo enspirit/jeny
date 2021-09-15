@@ -26,10 +26,11 @@ module Jeny
         to.mkdir_p
         Generate.new(@config, jeny_data, from, to).call
       when "s", "snippets"
-        _, asset, source = args
+        _, asset, *source = args
         raise Error, "Asset must be specified" if asset.nil? or Path(asset).exist?
-        source ||= Path.pwd
-        Snippets.new(@config, jeny_data, asset, Path(source)).call
+        source = [Path.pwd] if source.empty?
+        from = source.map{|t| Path(t) }
+        Snippets.new(@config, jeny_data, asset, from).call
       else
         raise Error, "Unknown command `#{command}`"
       end

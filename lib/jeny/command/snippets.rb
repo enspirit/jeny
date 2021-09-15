@@ -11,24 +11,16 @@ module Jeny
       end
       attr_reader :config, :data, :asset, :from
 
-      alias :to :from
-
       def call
         puts
         sm, state = config.state_manager, OpenStruct.new
         sm.stash(state) if config.sm_stash?
 
         changed = []
-        if from.file?
-          pair = snippet_it(from) unless config.ignore_file?(from)
-          changed << pair if pair
-        else
-          from.glob("**/*").each do |source|
-            next if source.directory?
-            next if config.ignore_file?(source)
-            pair = snippet_it(source)
-            changed << pair if pair
-          end
+        from.each do |source|
+          parent = source
+          parent = source.parent until parent.directory?
+          _call(source, parent, changed)
         end
 
         sm.commit(changed.map(&:first), state) if config.sm_commit?
@@ -41,7 +33,25 @@ module Jeny
         sm.unstash(state) if config.sm_stash?
       end
 
-      def snippet_it(source)
+      def _call(source, parent, changed)
+        raise ArgumentError, parent unless parent.directory?
+
+        if source.file?
+          return if config.ignore_file?(source)
+          pair = snippet_it(source, parent)
+          changed << pair if pair
+        elsif source.directory?
+          source.glob("**/*").each do |sub|
+            next if sub.directory?
+            _call(sub, parent, changed)
+          end
+        else
+          raise ArgumentError, "Not a file, nor or directly: #{source}"
+        end
+      end
+      private :_call
+
+      def snippet_it(source, parent)
         target, target_content = nil
         if source.ext =~ /\.?jeny/
           file = File::Full.new(source, config)
@@ -67,7 +77,13 @@ module Jeny
         target ? [target, target_content] : nil
       rescue => ex
         msg = "Error in `#{simplify_path(source)}`: #{ex.message}"
-        raise Error, msg
+        raise Error, msg, ex.backtrace
+      end
+
+    private
+
+      def target_for(source, data = self.data)
+        Path(Dialect.render(source.to_s.gsub(/\.jeny/, ""), data))
       end
 
     end # class Snippets

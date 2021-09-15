@@ -1,8 +1,7 @@
 require 'spec_helper'
 module Jeny
   class Command
-    describe Support, "target_for" do
-      include Support
+    describe Generate, "target_for" do
 
       let(:from) {
         FIXTURES/"rubygem"
@@ -17,7 +16,7 @@ module Jeny
       }
 
       subject {
-        target_for(source, data)
+        Generate.new(nil, {}, from, to).send(:target_for, source, data)
       }
 
       context "when file name has no variable and no suffix" do

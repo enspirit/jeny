@@ -30,6 +30,15 @@ module Jeny
         edit_changed_files(changed)
       end
 
+    private
+
+      def target_for(source, data = self.data)
+        relative = source.relative_to(from)
+        relative.each_filename.map{|f|
+          Dialect.render(f.gsub(/.jeny$/, ""), data)
+        }.inject(to){|t,part| t/part }
+      end
+
     end # class Generate
   end # class Command
 end # module Jeny
