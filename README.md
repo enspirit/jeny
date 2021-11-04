@@ -1,6 +1,6 @@
 # Jeny
 
-![](https://travis-ci.com/enspirit/jeny.svg?branch=master)
+[![Tests](https://github.com/enspirit/jeny/actions/workflows/integration.yml/badge.svg)](https://github.com/enspirit/jeny/actions/workflows/integration.yml)
 
 Jeny is a simple yet powerful commandline tool for scaffolding new
 projects and generating code snippets in existing ones.
