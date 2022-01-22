@@ -54,7 +54,7 @@ module Jeny
     # either true of false.
     #
     # Both are true by default.
-    attr_reader :state_manager_options
+    attr_accessor :state_manager_options
 
     # :nodoc:
     def sm_stash?

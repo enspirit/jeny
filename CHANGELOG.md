@@ -8,6 +8,8 @@
 
 * min.js and min.css files are ignored by default
 
+* `Configuration#state_manager_options=` now exists.
+
 ## 1.0.0 - 2020-12-30
 
 * Birthday, first tool and public API.
