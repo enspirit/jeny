@@ -1,19 +1,20 @@
-name: Release Gem
+name: Publish gem to Rubygem
 
 on:
   push:
     tags:
-      - '*'
+    - '*'
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
-  Tests:
+  ci:
     uses: enspirit/jeny/.github/workflows/integration.yml@master
 
-  RubyGems:
-    needs: Tests
+  rubygem:
+    needs: ci
     runs-on: ubuntu-latest
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - uses: act10ns/slack@v1
         with:
@@ -27,16 +28,14 @@ jobs:
           ruby-version: 2.4
           bundler-cache: true
 
-      - name: Build gem
-        id: build-gem
-        run: make gem
+      - run: make package
 
       - name: Release Gem
         uses: cadwallion/publish-rubygems-action@master
-        id: publish-gem
+        id: gem-push
         env:
           RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-          RELEASE_COMMAND: make gem.publish
+          RELEASE_COMMAND: make gem.push
 
       - uses: act10ns/slack@v1
         with:
@@ -45,8 +44,8 @@ jobs:
           channel: '#opensource-cicd'
         if: always()
 
-  Github:
-    needs: Tests
+  github:
+    needs: ci
     runs-on: ubuntu-latest
     steps:
       - uses: act10ns/slack@v1
@@ -61,14 +60,12 @@ jobs:
           ruby-version: 2.4
           bundler-cache: true
 
-      - name: Build packages
-        run: make gem
-        id: build-gem
+      - run: make package
 
       - uses: ncipollo/release-action@v1
         id: create-release
         with:
-          artifacts: "pkg/*.gem"
+          artifacts: "pkg/*"
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: act10ns/slack@v1

@@ -1,10 +1,8 @@
+package:
+	bundle exec rake package
+
 tests:
-	bundle exec rake test:all
+	bundle exec rake test
 
-gem: pkg
-
-pkg: gem
-	bundle exec rake gem
-
-gem.publish:
-	ls pkg/*.gem | xargs gem push
+gem.push:
+	ls pkg/jeny-*.gem | xargs gem push
