@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Fix CI&CD on github actions.
+
 ## 1.1.0
 
 * `jeny snippets` now supports taking a single file and applies to that file
